@@ -3,48 +3,43 @@
 
 Мок мок мок мок :)
 
-## Installation
-
+## Setting up the app
 ```bash
+1. Установить зависимости
 $ npm install
+
+2. Скопировать содержимое архива с фильмами 
+по адресу *path_to_this_app*/src/movies
+
+3. Подготовить базу данных (по видео)
+
+4. Запустить приложение:
+$ npm run start:dev
+
+5. Отправить GET-запрос для наполнения БД (в консоли будет спамить фраза, 
+1 фраза = 1 перенесённый фильм)
+
+6. После окончания процесса отправлять GET-запросы по эндпоинту ниже
 ```
+
 
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# вам нужен этот режим
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+## Api
 
 ```bash
-# unit tests
-$ npm run test
+#GET-request
+http://localhost:3000/movies
 
-# e2e tests
-$ npm run test:e2e
+#Query:
+year=2008
+director=Джей Лоуи
+- Можно комбинировать или вообще не использовать. 
+- Во втором случае вернутся все фильмы, аккуратнее:)
 
-# test coverage
-$ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
