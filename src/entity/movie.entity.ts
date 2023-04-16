@@ -16,25 +16,31 @@ export class Movie {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   type: string;
 
-  @Column()
+  @Column({ nullable: true })
   rating: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   slogan: string;
 
-  @Column()
+  @Column({ nullable: true })
   poster: string;
 
-  @Column()
+  @Column({ nullable: true })
   previewPoster: string;
 
-  @ManyToMany(() => Genre)
+  @Column({ nullable: true })
+  year: number;
+
+  @Column({ nullable: true })
+  director: string;
+
+  @ManyToMany((type) => Genre, (genre) => genre.movies, { cascade: true })
   @JoinTable()
   genre: Genre[];
 
