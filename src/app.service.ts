@@ -39,64 +39,67 @@ export class AppService {
     const dir = './src/movies';
     const files = await fsPromises.readdir(dir);
     for (const file of files) {
-      const data = await fsPromises.readFile(`${dir}/${file}`);
-      const parsedData = JSON.parse(data.toString());
-      //Inserting countries
-      const countries = [];
-      for (const country of parsedData.countries) {
-        if (
-          !(await this.countryRepository.findOneBy({
-            name: country.name,
-          }))
-        ) {
-          countries.push(
-            await this.countryRepository.save({ name: country.name }),
-          );
-        } else {
-          countries.push(
-            await this.countryRepository.findOneBy({ name: country.name }),
-          );
+      try {
+        const data = await fsPromises.readFile(`${dir}/${file}`);
+        const parsedData = JSON.parse(data.toString());
+        //Inserting countries
+        const countries = [];
+        for (const country of parsedData.countries) {
+          if (
+            !(await this.countryRepository.findOneBy({
+              name: country.name,
+            }))
+          ) {
+            countries.push(
+              await this.countryRepository.save({ name: country.name }),
+            );
+          } else {
+            countries.push(
+              await this.countryRepository.findOneBy({ name: country.name }),
+            );
+          }
         }
-      }
-      //Inserting genres
-      const genres = [];
-      for (const genre of parsedData.genres) {
-        if (
-          !(await this.genreRepository.findOneBy({
-            name: genre.name,
-          }))
-        ) {
-          genres.push(await this.genreRepository.save({ name: genre.name }));
-        } else {
-          genres.push(
-            await this.genreRepository.findOneBy({ name: genre.name }),
-          );
+        //Inserting genres
+        const genres = [];
+        for (const genre of parsedData.genres) {
+          if (
+            !(await this.genreRepository.findOneBy({
+              name: genre.name,
+            }))
+          ) {
+            genres.push(await this.genreRepository.save({ name: genre.name }));
+          } else {
+            genres.push(
+              await this.genreRepository.findOneBy({ name: genre.name }),
+            );
+          }
         }
+        //Inserting movie
+        const movie = {
+          name: parsedData.name,
+          type: parsedData.type,
+          rating: parsedData.rating.kp,
+          description: parsedData.description,
+          slogan: parsedData.slogan,
+          poster: parsedData.poster.url,
+          previewPoster: parsedData.poster.previewUrl,
+          year: parsedData.year,
+          director: null,
+        };
+        const director = parsedData.persons.find((person) => {
+          return person.enProfession == 'director';
+        });
+        movie.director = director.name;
+        if (!(await this.movieRepository.findOneBy({ name: movie.name }))) {
+          const newMovie = await this.movieRepository.create(movie);
+          newMovie.genre = genres;
+          newMovie.country = countries;
+          await this.movieRepository.save(newMovie);
+        }
+        console.log('Я обязательно доделаю...');
+      } catch (e) {
+        console.log(e);
       }
-      //Inserting movie
-      const movie = {
-        name: parsedData.name,
-        type: parsedData.type,
-        rating: parsedData.rating.kp,
-        description: parsedData.description,
-        slogan: parsedData.slogan,
-        poster: parsedData.poster.url,
-        previewPoster: parsedData.poster.previewUrl,
-        year: parsedData.year,
-        director: null,
-      };
-      const director = parsedData.persons.find((person) => {
-        return person.enProfession == 'director';
-      });
-      console.log(director);
-      movie.director = director.name;
-      if (!(await this.movieRepository.findOneBy({ name: movie.name }))) {
-        const newMovie = await this.movieRepository.create(movie);
-        newMovie.genre = genres;
-        newMovie.country = countries;
-        await this.movieRepository.save(newMovie);
-      }
-      console.log('Я обязательно доделаю...');
     }
     return 'Говорим большое спасибо Вове Андрееву за то, что он наколдовал невероятное количество фильмов в короткий срок!';
   }
