@@ -36,8 +36,11 @@ export class AppService {
   }
 
   async getMovieById(movieId): Promise<Movie> {
-    return this.movieRepository.findOneBy({
-      id: movieId,
+    return this.movieRepository.findOne({
+      where: {
+        id: movieId,
+      },
+      relations: { genre: true },
     });
   }
 
