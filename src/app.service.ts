@@ -35,6 +35,12 @@ export class AppService {
     // return movies;
   }
 
+  async getMovieById(movieId): Promise<Movie> {
+    return this.movieRepository.findOneBy({
+      id: movieId,
+    });
+  }
+
   async loadInfoIntoDatabase() {
     const dir = './src/movies';
     const files = await fsPromises.readdir(dir);
