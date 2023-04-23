@@ -35,13 +35,176 @@ export class AppService {
     // return movies;
   }
 
-  async getMovieById(movieId): Promise<Movie> {
-    return this.movieRepository.findOne({
+  async getMovieById(movieId): Promise<object> {
+    const movieFromDb = await this.movieRepository.findOne({
       where: {
         id: movieId,
       },
       relations: { genre: true },
     });
+    const movieObject = {
+      id: movieFromDb.id,
+      nameRu: movieFromDb.name,
+      nameEn: 'Name in English.',
+      type: movieFromDb.type,
+      description: movieFromDb.description,
+      country: movieFromDb.country,
+      genres: movieFromDb.genre,
+      trailer: 'https://www.youtube.com/v/Hv3jf9DHFzk',
+      similarMovies: await this.movieRepository
+        .createQueryBuilder()
+        .select()
+        .limit(10)
+        .execute(),
+      startYear: movieFromDb.year,
+      endYear: movieFromDb.type == 'movie' ? null : 2023,
+      rating: movieFromDb.rating,
+      ratingCount: 1337228,
+      poster: movieFromDb.poster,
+      previewPoster: movieFromDb.previewPoster,
+      duration: 182,
+      slogan: movieFromDb.slogan,
+      director: [
+        {
+          id: 14189,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_14189.jpg',
+          name: 'Лэнс Реддик',
+          enName: 'Lance Reddick',
+        },
+        {
+          id: 32491,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_32491.jpg',
+          name: 'Уэнделл Пирс',
+          enName: 'Wendell Pierce',
+        },
+      ],
+      actors: [
+        {
+          id: 14189,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_14189.jpg',
+          name: 'Лэнс Реддик',
+          enName: 'Lance Reddick',
+        },
+        {
+          id: 32491,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_32491.jpg',
+          name: 'Уэнделл Пирс',
+          enName: 'Wendell Pierce',
+        },
+        {
+          id: 22783,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_22783.jpg',
+          name: 'Кларк Питерс',
+          enName: 'Clarke Peters',
+        },
+        {
+          id: 1425,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_1425.jpg',
+          name: 'Соня Сон',
+          enName: 'Sonja Sohn',
+        },
+        {
+          id: 814,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_814.jpg',
+          name: 'Дирдри Лавджой',
+          enName: 'Deirdre Lovejoy',
+        },
+        {
+          id: 29856,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_29856.jpg',
+          name: 'Эйдан Гиллен',
+          enName: 'Aidan Gillen',
+        },
+        {
+          id: 17310,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_17310.jpg',
+          name: 'Сет Гиллиам',
+          enName: 'Seth Gilliam',
+        },
+        {
+          id: 48134,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_48134.jpg',
+          name: 'Идрис Эльба',
+          enName: 'Idris Elba',
+        },
+      ],
+      producer: [
+        {
+          id: 17310,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_17310.jpg',
+          name: 'Сет Гиллиам',
+          enName: 'Seth Gilliam',
+        },
+        {
+          id: 48134,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_48134.jpg',
+          name: 'Идрис Эльба',
+          enName: 'Idris Elba',
+        },
+      ],
+      cineatographer: [
+        {
+          id: 17310,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_17310.jpg',
+          name: 'Сет Гиллиам',
+          enName: 'Seth Gilliam',
+        },
+        {
+          id: 48134,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_48134.jpg',
+          name: 'Идрис Эльба',
+          enName: 'Idris Elba',
+        },
+      ],
+      screenwriter: [
+        {
+          id: 17310,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_17310.jpg',
+          name: 'Сет Гиллиам',
+          enName: 'Seth Gilliam',
+        },
+        {
+          id: 48134,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_48134.jpg',
+          name: 'Идрис Эльба',
+          enName: 'Idris Elba',
+        },
+      ],
+      composer: [
+        {
+          id: 17310,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_17310.jpg',
+          name: 'Сет Гиллиам',
+          enName: 'Seth Gilliam',
+        },
+        {
+          id: 48134,
+          photo:
+            'https://st.kp.yandex.net/images/actor_iphone/iphone360_48134.jpg',
+          name: 'Идрис Эльба',
+          enName: 'Idris Elba',
+        },
+      ],
+    };
+
+    return movieObject;
   }
 
   async loadInfoIntoDatabase() {
