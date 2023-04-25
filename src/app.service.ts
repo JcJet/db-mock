@@ -232,12 +232,47 @@ export class AppService {
           }
         }
         //Inserting genres
+        const rightGenres = [
+          'боевик',
+          'триллер',
+          'криминал',
+          'комедия',
+          'семейный',
+          'драма',
+          'мелодрама',
+          'военный',
+          'детектив',
+          'спорт',
+          'история',
+          'фэнтези',
+          'фантастика',
+          'документальный',
+          'ужасы',
+          'биография',
+          'аниме',
+          'мультфильм',
+          'новости',
+          'приключения',
+          'короткометражка',
+          'мюзикл',
+          'детский',
+          'музыка',
+          'вестерн',
+          'концерт',
+          'реальное ТВ',
+          'ток-шоу',
+          'для взрослых',
+          'фильм-нуар',
+          'игра',
+          'церемония',
+        ];
         const genres = [];
         for (const genre of parsedData.genres) {
           if (
             !(await this.genreRepository.findOneBy({
               name: genre.name,
-            }))
+            })) &&
+            rightGenres.includes(genre.name)
           ) {
             genres.push(await this.genreRepository.save({ name: genre.name }));
           } else {
@@ -274,5 +309,28 @@ export class AppService {
       }
     }
     return 'Говорим большое спасибо Вове Андрееву за то, что он наколдовал невероятное количество фильмов в короткий срок!';
+  }
+
+  async getGenresList() {
+    return this.genreRepository.find();
+  }
+
+  async getPersonById() {
+    const person = {
+      id: 10780,
+      photo: 'https://st.kp.yandex.net/images/actor_iphone/iphone360_10780.jpg',
+      name: 'Доминик Уэст',
+      enName: 'Dominic West',
+      movies: null,
+      description:
+        'Some description for movie person. Actually, we did not parse any data like description, so all persons have the same one.',
+    };
+    person.movies = await this.movieRepository
+      .createQueryBuilder('movie')
+      .select('movie.*')
+      .where({})
+      .limit(40)
+      .execute();
+    return person;
   }
 }

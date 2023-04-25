@@ -20,4 +20,14 @@ export class AppController {
   getMovieById(@Param('id') movieId: number) {
     return this.appService.getMovieById(movieId);
   }
+
+  @Get('genres')
+  getGenresList() {
+    return this.appService.getGenresList();
+  }
+
+  @Get('person/:id')
+  getPersonById(@Param('id') personId: number) {
+    return this.appService.getPersonById();
+  }
 }
