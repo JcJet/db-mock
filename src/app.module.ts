@@ -10,7 +10,7 @@ import { Genre } from './entity/genre.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'localhost', //'postgres' if using with docker
       port: 5432,
       username: 'admin',
       password: 'admin',
