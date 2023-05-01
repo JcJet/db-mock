@@ -214,6 +214,7 @@ export class AppService {
       try {
         const data = await fsPromises.readFile(`${dir}/${file}`);
         const parsedData = JSON.parse(data.toString());
+
         //Inserting countries
         const countries = [];
         for (const country of parsedData.countries) {
@@ -231,6 +232,7 @@ export class AppService {
             );
           }
         }
+
         //Inserting genres
         const rightGenres = [
           'боевик',
@@ -292,6 +294,7 @@ export class AppService {
           previewPoster: parsedData.poster.previewUrl,
           year: parsedData.year,
           director: null,
+          genres: genres,
         };
         const director = parsedData.persons.find((person) => {
           return person.enProfession == 'director';
